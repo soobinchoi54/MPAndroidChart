@@ -25,8 +25,6 @@ public class ObjectPool<T extends ObjectPool.Poolable> {
     private int objectsPointer;
     private T modelObject;
     private float replenishPercentage;
-    private int replenishNumber;
-
 
     /**
      * Returns the id of the given pool instance.
