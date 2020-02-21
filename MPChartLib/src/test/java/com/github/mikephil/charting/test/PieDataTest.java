@@ -1,9 +1,6 @@
 package com.github.mikephil.charting.test;
 
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import org.junit.Test;
@@ -11,8 +8,57 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class PieDataTest {
+
+    @Test
+    // for coverage
+    public void testNullObjects(){
+
+        // create a DataSet of empty ArrayList
+        List<PieEntry> values1 = new ArrayList<>();
+        PieDataSet pieDataSet1 = new PieDataSet(values1, "Set1");
+
+        // Create another DataSet from copy of dataSet1, and clear it.
+        DataSet pieDataSet2 = pieDataSet1.copy();
+        pieDataSet2.clear();
+        pieDataSet2.calcMinMaxY(Float.MIN_VALUE, Float.MAX_VALUE);
+        assertEquals(-Float.MAX_VALUE,pieDataSet2.getYMax(), 0.01f);
+
+        // Add a null object to a PieDataSet
+        pieDataSet2.addEntry(null);
+        pieDataSet2.calcMinMax();
+        assertEquals(-Float.MAX_VALUE,pieDataSet2.getYMax(), 0.01f);
+
+        // Add a meaningful object to a PieDataSet
+        PieEntry pieEntry = new PieEntry(6);
+        assertEquals(6f,pieEntry.getValue());
+        pieDataSet2.addEntry(pieEntry);
+        pieDataSet2.calcMinMaxY(Float.MIN_VALUE, Float.MAX_VALUE);
+        assertEquals(6f,pieDataSet2.getYMax(), 0.01f);
+
+        // the DataSet in pieData1 is an empty List
+        PieData pieData1 = new PieData(pieDataSet1);
+        pieData1.calcMinMaxY(Float.MIN_VALUE, Float.MAX_VALUE);
+        IPieDataSet dataSet1 = pieData1.getDataSetByIndex(0);
+        assertEquals(-Float.MAX_VALUE, dataSet1.getYMax());
+
+        // Construct a pieData by passing nothing
+        try{
+            PieData pieData2 = new PieData();
+            pieData2.calcMinMaxY(Float.MIN_VALUE, Float.MAX_VALUE);
+            // since in its source code, getDataSetByIndex doesn't check
+            // whether the ArraryList is existing, it will always return
+            // ArrayList.get(0) without an exception
+            assertNull(pieData2.getDataSetByIndex(0));
+        } catch (IndexOutOfBoundsException e){
+            boolean thrown = true;
+            assertTrue(thrown);
+        }
+    }
+
     @Test
     public void testPositiveInvalidIndex(){
         // create a list of PieEntry
