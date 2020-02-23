@@ -23,4 +23,5 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.0.2"
     implementation 'com.google.android.material:material:1.0.0'
     implementation project(':MPChartLib')
+    implementation fileTree(dir: '/Users/soobinchoi/Desktop/UCI-MSWE-2020/Coursework/Winter 2020/Software Testing and Debugging/Niubility/Assignment', include: ['*.aar', '*.jar'], exclude: [])
 }
