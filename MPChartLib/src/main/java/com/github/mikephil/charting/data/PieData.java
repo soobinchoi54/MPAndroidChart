@@ -83,4 +83,22 @@ public class PieData extends ChartData<IPieDataSet> {
 
         return sum;
     }
+
+    // modified method
+
+    public List<PieEntry> getEntryList(){
+        List<PieEntry> entryList = new ArrayList<>();
+        int size = getDataSet().getEntryCount();
+        for(int i = 0; i < size; i++){
+            entryList.add(getDataSet().getEntryForIndex(i));
+        }
+        return entryList;
+    }
+    public float getYValueSumV2(List<PieEntry> pieEntries){
+        float sum = 0;
+        for(int i = 0; i < pieEntries.size(); i++){
+            sum += pieEntries.get(i).getY();
+        }
+        return sum;
+    }
 }
